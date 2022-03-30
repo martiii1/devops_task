@@ -71,13 +71,6 @@ def get_items_form_emag(link):
 
 
 def write_info_to_db(file_name, raw_data_list):
-    conn = psycopg2.connect(database="postgres", user="postgres", password="postgres", host="192.168.1.7", port="5432")
-    cur = conn.cursor()
-    sql = '''CREATE database test1''';
-    #Creating a database
-    cur.execute(sql)
-    print("Database created successfully........")
-    conn.close()
     conn = psycopg2.connect(database="test1", user="postgres", password="postgres", host="192.168.1.7", port="5432")
     cur = conn.cursor()
 

@@ -1,9 +1,6 @@
 services:
   postgre_db:
-    image: postgres:14.1-alpine
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+    build: ./postgre_db
     ports:
       - '5432:5432'
     volumes:
