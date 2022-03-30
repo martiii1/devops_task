@@ -71,9 +71,17 @@ def get_items_form_emag(link):
 
 
 def write_info_to_db(file_name, raw_data_list):
+    conn = psycopg2.connect(database="postgres", user="postgres", password="postgres", host="192.168.1.7", port="5432")
+    cur = conn.cursor()
+    sql = '''CREATE database test1''';
+    #Creating a database
+    cur.execute(sql)
+    print("Database created successfully........")
+    conn.close()
     conn = psycopg2.connect(database="test1", user="postgres", password="postgres", host="192.168.1.7", port="5432")
     cur = conn.cursor()
-    cur.execute("CREATE TABLE slushalki_prices(id SERIAL PRIMARY KEY, price FLOAT, description CHAR(500), url CHAR(500));")
+
+    cur.execute("CREATE TABLE IF NOT EXISTS slushalki_prices(id SERIAL PRIMARY KEY, price FLOAT, description CHAR(500), url CHAR(500));")
     print("Table Created....")
 
     for item in raw_data_list:
@@ -118,4 +126,4 @@ for number in range(number_of_pages + 1):
     products_collected = get_items_form_emag(get_next_link(my_link, number))
     write_info_to_db(text_file_name, products_collected)
 
-print(f"The data from the site was saved on a text file: {text_file_name}")
+print(f"The data from the site was saved on a the postgresql")
