@@ -125,16 +125,16 @@ conn = psycopg2.connect(database="test1", user="postgres", password="postgres", 
 cur = conn.cursor()
 cur.execute("CREATE TABLE test_table(id serial PRIMARY KEY, price float, description CHAR(500));")
 print("Table Created....")
-cur.execute("INSERT INTO test_table (id, sname, roll_num) \
+cur.execute("INSERT INTO test_table (id, price, description) \
       VALUES (1, 150.48, 'Headphones')");
 
-cur.execute("INSERT INTO test_table (id, sname, roll_num) \
+cur.execute("INSERT INTO test_table (id, price, description) \
       VALUES (2, 55.99,'Mouse')");
 
-cur.execute("INSERT INTO test_table (id, sname, roll_num) \
+cur.execute("INSERT INTO test_table (id, price, description) \
       VALUES (3, 480.50, 'Monitor')");
 
-cur.execute("INSERT INTO test_table (id, sname, roll_num) \
+cur.execute("INSERT INTO test_table (id, price, description) \
       VALUES (4, 2999.99, 'Laptop')");
 
 conn.commit()
