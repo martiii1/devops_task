@@ -73,12 +73,12 @@ def get_items_form_emag(link):
 def write_info_to_db(file_name, raw_data_list):
     conn = psycopg2.connect(database="test1", user="postgres", password="postgres", host="192.168.1.7", port="5432")
     cur = conn.cursor()
-    cur.execute("CREATE TABLE slushalki_prices(id AUTO_INCREMENT PRIMARY KEY, price float, description CHAR(500), url CHAR(500));")
+    cur.execute("CREATE TABLE slushalki_prices(id SERIAL PRIMARY KEY, price FLOAT, description CHAR(500), url CHAR(500));")
     print("Table Created....")
 
     for item in raw_data_list:
         cur.execute(f"INSERT INTO slushalki_prices (price, description, url) \
-        VALUES ({float(item.price)}, {str(item.description)}, {str(item.link)})");
+        VALUES ({float(item.price)}, '{str(item.description)}', '{str(item.link)}')");
             
     conn.commit()
     print("Records created successfully");
