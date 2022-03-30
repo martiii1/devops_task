@@ -116,6 +116,6 @@ number_of_pages = 0
 
 for number in range(number_of_pages + 1):
     products_collected = get_items_form_emag(get_next_link(my_link, number))
-    write_info_to_file(text_file_name, products_collected)
+    write_info_to_db(text_file_name, products_collected)
 
 print(f"The data from the site was saved on a text file: {text_file_name}")
