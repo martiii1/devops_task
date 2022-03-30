@@ -1,5 +1,16 @@
 services:
+  postgre_db:
+    image: postgres:14.1-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./postgre_db:/var/lig/postgresql/data
   scraper-service:
     build: ./python_app
     volumes:
       - ./python_app:/usr/src/app
+    ports:
+      - 3000:3000

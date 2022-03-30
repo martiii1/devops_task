@@ -2,6 +2,7 @@ from operator import le
 import requests
 from bs4 import BeautifulSoup
 import re
+import psycopg2
 
 
 class ProductInfo:
@@ -119,3 +120,23 @@ for number in range(number_of_pages + 1):
     write_info_to_file(text_file_name, products_collected)
 
 print(f"The data from the site was saved on a text file: {text_file_name}")
+
+conn = psycopg2.connect(database="test1", user="postgres", password="postgres", host="192.168.1.7", port="5432")
+cur = conn.cursor()
+cur.execute("CREATE TABLE test_table(id serial PRIMARY KEY, price float, description CHAR(500));")
+print("Table Created....")
+cur.execute("INSERT INTO test_table (id, sname, roll_num) \
+      VALUES (1, 150.48, 'Headphones')");
+
+cur.execute("INSERT INTO test_table (id, sname, roll_num) \
+      VALUES (2, 55.99,'Mouse')");
+
+cur.execute("INSERT INTO test_table (id, sname, roll_num) \
+      VALUES (3, 480.50, 'Monitor')");
+
+cur.execute("INSERT INTO test_table (id, sname, roll_num) \
+      VALUES (4, 2999.99, 'Laptop')");
+
+conn.commit()
+print("Records created successfully");
+conn.close()
