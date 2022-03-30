@@ -71,16 +71,26 @@ def get_items_form_emag(link):
 
 
 def write_info_to_db(file_name, raw_data_list):
-    conn = psycopg2.connect(database="test1", user="postgres", password="postgres", host="192.168.1.7", port="5432")
+    conn = psycopg2.connect(database="postgres", user="postgres", password="postgres", host="192.168.1.7", port="5432")
+    conn.autocommit=True
     cur = conn.cursor()
 
+    cur.execute("SELECT 1 FROM pg_catalog.pg_database WHERE datname = 'test1'")
+    exists = cur.fetchone()
+    if not exists:
+        cur.execute('CREATE DATABASE test1')
+        conn.commit()
+    conn.close()
+
+    conn = psycopg2.connect(database="test1", user="postgres", password="postgres", host="192.168.1.7", port="5432")
+    cur = conn.cursor()
     cur.execute("CREATE TABLE IF NOT EXISTS slushalki_prices(id SERIAL PRIMARY KEY, price FLOAT, description CHAR(500), url CHAR(500));")
     print("Table Created....")
 
     for item in raw_data_list:
         cur.execute(f"INSERT INTO slushalki_prices (price, description, url) \
         VALUES ({float(item.price)}, '{str(item.description)}', '{str(item.link)}')");
-            
+
     conn.commit()
     print("Records created successfully");
     conn.close()
