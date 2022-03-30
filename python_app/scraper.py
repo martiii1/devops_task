@@ -70,20 +70,19 @@ def get_items_form_emag(link):
     return all_products
 
 
-def write_info_to_file(file_name, raw_data_list):
-    with open(file_name, 'a') as file:
-        for item in raw_data_list:
-           
-            file.write(str(item.description))
-            file.write("\n")
+def write_info_to_db(file_name, raw_data_list):
+    conn = psycopg2.connect(database="test1", user="postgres", password="postgres", host="192.168.1.7", port="5432")
+    cur = conn.cursor()
+    cur.execute("CREATE TABLE slushalki_prices(id AUTO_INCREMENT PRIMARY KEY, price float, description CHAR(500), url CHAR(500));")
+    print("Table Created....")
 
-            file.write(str(item.link))
-            file.write("\n")
-
-            file.write(str(item.price))
-            file.write("\n")
-            file.write("\n")
-            file.write("\n")
+    for item in raw_data_list:
+        cur.execute(f"INSERT INTO slushalki_prices (price, description, url) \
+        VALUES ({float(item.price)}, {str(item.description)}, {str(item.link)})");
+            
+    conn.commit()
+    print("Records created successfully");
+    conn.close()
 
 
 def get_next_link(link, page_num=0):
@@ -120,23 +119,3 @@ for number in range(number_of_pages + 1):
     write_info_to_file(text_file_name, products_collected)
 
 print(f"The data from the site was saved on a text file: {text_file_name}")
-
-conn = psycopg2.connect(database="test1", user="postgres", password="postgres", host="192.168.1.7", port="5432")
-cur = conn.cursor()
-cur.execute("CREATE TABLE test_table(id serial PRIMARY KEY, price float, description CHAR(500));")
-print("Table Created....")
-cur.execute("INSERT INTO test_table (id, price, description) \
-      VALUES (1, 150.48, 'Headphones')");
-
-cur.execute("INSERT INTO test_table (id, price, description) \
-      VALUES (2, 55.99,'Mouse')");
-
-cur.execute("INSERT INTO test_table (id, price, description) \
-      VALUES (3, 480.50, 'Monitor')");
-
-cur.execute("INSERT INTO test_table (id, price, description) \
-      VALUES (4, 2999.99, 'Laptop')");
-
-conn.commit()
-print("Records created successfully");
-conn.close()

@@ -12,5 +12,3 @@ services:
     build: ./python_app
     volumes:
       - ./python_app:/usr/src/app
-    ports:
-      - 3000:3000
