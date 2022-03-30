@@ -1,0 +1,5 @@
+services:
+  scraper-service:
+    build: ./python_app
+    volumes:
+      - ./python_app:/usr/src/app
