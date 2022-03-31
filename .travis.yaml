@@ -1,0 +1,12 @@
+sudo: required
+dist: trusty
+
+before_script:
+  - cd python_app/
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+script:
+  - docker build -t emag_scraper .
+  - docker images
+  - docker tag emag_scraper $DOCKER_USERNAME/emag_scraper
+  - docker push $DOCKER_USERNAME/emag_scraper
