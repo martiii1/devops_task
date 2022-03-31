@@ -6,7 +6,7 @@ before_script:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 script:
-  - docker build -t emag_scraper .
+  - docker build -t scraper_postgre_db .
   - docker images
-  - docker tag emag_scraper $DOCKER_USERNAME/emag_scraper
-  - docker push $DOCKER_USERNAME/emag_scraper
+  - docker tag scraper_postgre_db $DOCKER_USERNAME/scraper_postgre_db
+  - docker push $DOCKER_USERNAME/scraper_postgre_db
