@@ -78,7 +78,7 @@ def write_info_to_db(file_name, raw_data_list):
     db_port = str(sys.argv[3])
     db_name = str(sys.argv[4])
     db_table_name = str(sys.argv[5])
-    conn = psycopg2.connect(database="postgres", user=db_user, password= db_pass, host=db_host, port=db_port)
+    conn = psycopg2.connect(database="postgres", user=f"{db_user}", password=f"{db_pass}", host=f"{db_host}", port=f"{db_port}")
     conn.autocommit=True
     cur = conn.cursor()
 
@@ -89,7 +89,7 @@ def write_info_to_db(file_name, raw_data_list):
         conn.commit()
     conn.close()
 
-    conn = psycopg2.connect(database=db_name, user=db_user, password= db_pass, host=db_host, port=db_port)
+    conn = psycopg2.connect(database=f"{db_name}", user=f"{db_user}", password=f"{db_pass}", host=f"{db_host}", port=f"{db_port}")
     cur = conn.cursor()
     cur.execute(f"CREATE TABLE IF NOT EXISTS {db_table_name}(id SERIAL PRIMARY KEY, price FLOAT, description CHAR(500), url CHAR(500));")
     print("Table Created....")
