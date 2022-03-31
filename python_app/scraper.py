@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import psycopg2
+import sys
 
 
 class ProductInfo:
@@ -71,20 +72,26 @@ def get_items_form_emag(link):
 
 
 def write_info_to_db(file_name, raw_data_list):
-    conn = psycopg2.connect(database="postgres", user="postgres", password="postgres", host="192.168.1.7", port="5432")
+    db_user = str(sys.argv[0])
+    db_pass = str(sys.argv[1])
+    db_host = str(sys.argv[2])
+    db_port = str(sys.argv[3])
+    db_name = str(sys.argv[4])
+    db_table_name = str(sys.argv[5])
+    conn = psycopg2.connect(database="postgres", user=db_user, password= db_pass, host=db_host, port=db_port)
     conn.autocommit=True
     cur = conn.cursor()
 
-    cur.execute("SELECT 1 FROM pg_catalog.pg_database WHERE datname = 'test1'")
+    cur.execute(f"SELECT 1 FROM pg_catalog.pg_database WHERE datname = '{db_name}'")
     exists = cur.fetchone()
     if not exists:
-        cur.execute('CREATE DATABASE test1')
+        cur.execute(f"CREATE DATABASE {db_name}")
         conn.commit()
     conn.close()
 
-    conn = psycopg2.connect(database="test1", user="postgres", password="postgres", host="192.168.1.7", port="5432")
+    conn = psycopg2.connect(database=db_name, user=db_user, password= db_pass, host=db_host, port=db_port)
     cur = conn.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS slushalki_prices(id SERIAL PRIMARY KEY, price FLOAT, description CHAR(500), url CHAR(500));")
+    cur.execute(f"CREATE TABLE IF NOT EXISTS {db_table_name}(id SERIAL PRIMARY KEY, price FLOAT, description CHAR(500), url CHAR(500));")
     print("Table Created....")
 
     for item in raw_data_list:
