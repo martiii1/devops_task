@@ -72,12 +72,12 @@ def get_items_form_emag(link):
 
 
 def write_info_to_db(file_name, raw_data_list):
-    db_user = str(sys.argv[0])
-    db_pass = str(sys.argv[1])
-    db_host = str(sys.argv[2])
-    db_port = str(sys.argv[3])
-    db_name = str(sys.argv[4])
-    db_table_name = str(sys.argv[5])
+    db_user = str(sys.argv[1])
+    db_pass = str(sys.argv[2])
+    db_host = str(sys.argv[3])
+    db_port = str(sys.argv[4])
+    db_name = str(sys.argv[5])
+    db_table_name = str(sys.argv[6])
     conn = psycopg2.connect(database="postgres", user=f"{db_user}", password=f"{db_pass}", host=f"{db_host}", port=f"{db_port}")
     conn.autocommit=True
     cur = conn.cursor()
